@@ -2,10 +2,10 @@ import pygame
 import random
 from analyze import parseSourceText
 import math
-
-w = 1455
-height_width_ratio = 1
-win = pygame.display.set_mode((w, 900* height_width_ratio))
+from colors import letterToColorMap
+w = 1000
+h = 618
+win = pygame.display.set_mode((w, h))
 
 red = (255,0,0)
 green = (22, 88, 2)
@@ -19,35 +19,6 @@ grey = (192,192,192)
 turquoise = (0,153,153)
 brown = (122, 87, 4)
 
-letterToColorMap = {
-	"a" : (225, 45, 45),
-	"b" : (45, 131, 243),
-	"c" : (74, 191, 250),
-	"d" : (101, 174, 37),
-	"e" : (228, 186, 18),
-	"f" : (255, 153, 51),
-	"g" : (255, 129, 3),
-	"h" : (3, 53, 255),
-	"i" : (218, 225, 249),
-	"j" : (237, 218, 255),
-	"k" : (159, 94, 10),
-	"l" : (250, 232, 114),
-	"m" : (122, 87, 4),
-	"n" : (4, 32, 122),
-	"o" : (255, 240, 209),
-	"p" : (142, 100, 206),
-	"q" : (109, 72, 165),
-	"r" : (255, 102, 0),
-	"s" : (41, 39, 2),
-	"t" : (22, 88, 2),
-	"u" : (255, 248, 181),
-	"v" : (191, 126, 247),
-	"w" : (58, 70, 182),
-	"x" : (86, 4, 127),
-	"y" : (242, 237, 172),
-	"z" : (0, 0, 0),
-	" " : (255, 255, 254)
-}
 
 def selectColor(letter):
 	# idx = randrange(26)
@@ -75,7 +46,7 @@ class Square:
 			print(self.letter)
 		# pygame.draw.circle(win, self.color, (self.x, self.y), self.width / 2)
 	
-	def setColor(self, color = white):
+	def setColor(self, color = black):
 		self.color = color
 
 	def getColor(self):
@@ -96,13 +67,13 @@ class Square:
 	def __lt__(self, other):
 		return False
 
-def makeGrid(rows, screen_width, content):
+def makeGrid(rows, cols, screen_width, content):
 	grid = []
-	width = 3
-	height = 3
+	width = 2
+	height = 2
 	print(width)
 	index = 0
-	for i in range(rows):
+	for i in range(cols):
 		grid.append([])
 		for j in range(rows):
 			if index >= len(content): 
@@ -142,17 +113,106 @@ def processText():
 			text += line.strip() + " "
 	infile.close()
 	return text
+    	
+# def sparkle(grid, indices):
 
+# 	blank = []
+# 	filled = []
+# 	for i in indices:
+# 		r = i[0]
+# 		c = i[1]
+# 		if grid[r][c].getColor() != selectColor(grid[r][c].getLetter()):
+# 			blank.append(grid[r][c])
+# 		else:
+# 			filled.append(grid[r][c])
+
+# 	random.shuffle(blank)
+# 	random.shuffle(filled)
+
+# 	while len(blank):
+# 		print(len(blank))
+# 		speed = 100
+# 		diff = 8000
+# 		updateRect = []
+# 		count = 0
+# 		for i in range(1, len(blank)):
+# 			if i == len(blank) or i == len(filled):
+# 				filled = filled[len(blank):].extend(filled[:len(blank)])
+# 				break
+# 			blank[i].invertColor()
+# 			blank[i].draw(win)
+# 			filled[i].invertColor()
+# 			filled[i].draw(win)
+# 			blank[i], filled[i] = filled[i], blank[i]
+# 			updateRect.append(pygame.Rect(blank[i].x, blank[i].y, blank[i].width, blank[i].height))
+# 			updateRect.append(pygame.Rect(filled[i].x, filled[i].y, filled[i].width, filled[i].height))
+# 			count += 1
+# 			if count == speed:
+# 				pygame.display.update(updateRect)
+# 				count = 0
+# 		cutIdx = min(diff, len(blank))
+# 		newFill = blank[:cutIdx]
+# 		blank = blank[cutIdx:]
+# 		updateRect = []
+# 		for i in newFill:
+# 			i.invertColor()
+# 			i.draw(win)
+# 			updateRect.append(pygame.Rect(i.x, i.y, i.width, i.height))
+# 		pygame.display.update(updateRect)
+# 		if not len(blank):
+# 				break
+# 	return
+
+# def sparkleAlgorithm(grid, rows):
+# 	while True:
+# 		win.fill(white)
+# 		pygame.display.update()
+# 		indices = []
+# 		for i in range(len(grid)):
+# 			for j in range(len(grid[i])):
+# 				indices.append((i,j))
+# 				grid[i][j].setColor()
+# 		random.shuffle(indices)
+# 		count = 0
+# 		updateRects = []
+# 		speed = 400
+# 		num = 0
+# 		for i in indices:
+# 			r = i[0]
+# 			c = i[1]
+# 			grid[r][c].restoreColor()
+# 			currentSquare = grid[r][c]
+# 			currentSquare.draw(win)
+# 			updateRects.append(pygame.Rect(currentSquare.x, currentSquare.y, currentSquare.width, currentSquare.height))
+# 			count += 1
+# 			num += 1
+# 			if count == speed:
+# 				pygame.display.update(updateRects)
+# 				updateRects = []
+# 				count = 0
+# 		pygame.display.update()
+# 		pygame.time.wait(3000)
+# 		changeColorByRandom(grid, rows, False)
+# 		pygame.time.wait(3000)
+# 		win.fill(black)
+# 		pygame.display.update()
+# 		pygame.time.wait(5000)
+# 		pygame.time.wait(3000)
+# 	return
+					
+    	
 def changeColorByRandom(grid, rows, restore = True):
 	indices = []
 	for i in range(len(grid)):
 		for j in range(len(grid[i])):
 			indices.append((i,j))
+	# indices.sort(key = lambda x: grid[x[0]][x[1]].getLetter())
 	random.shuffle(indices)
 	count = 0
 	updateRects = []
-	speed = 250
-	for i in indices:
+	speed = 50
+	currentSpeed = speed
+	for index, i in enumerate(indices):
 		r = i[0]
 		c = i[1]
 		if restore:
@@ -163,92 +223,22 @@ def changeColorByRandom(grid, rows, restore = True):
 		currentSquare.draw(win)
 		updateRects.append(pygame.Rect(currentSquare.x, currentSquare.y, currentSquare.width, currentSquare.height))
 		count += 1
-		if count == speed:
+		if count == currentSpeed or index > len(indices) - 30:
 			pygame.display.update(updateRects)
 			updateRects = []
 			count = 0
+	# if not restore:
+   	# 	win.fill(white)
 	pygame.display.update()
 	return
-    	
-def sparkle(grid, indices):
-
-	blank = []
-	filled = []
-	for i in indices:
-		r = i[0]
-		c = i[1]
-		if grid[r][c].getColor() != selectColor(grid[r][c].getLetter()):
-			blank.append(grid[r][c])
-		else:
-			filled.append(grid[r][c])
-
-	random.shuffle(blank)
-	random.shuffle(filled)
-
-	while True:
-		print("going into big loop")
-		speed = 70
-		updateRect = []
-		count = 0
-		for i in range(1, len(blank)):
-			if i == len(blank) or i == len(filled):
-				filled = filled[len(blank):].extend(filled[:len(blank)])
-				break
-			blank[i].invertColor()
-			blank[i].draw(win)
-			filled[i].invertColor()
-			filled[i].draw(win)
-			blank[i], filled[i] = filled[i], blank[i]
-			updateRect.append(pygame.Rect(blank[i].x, blank[i].y, blank[i].width, blank[i].height))
-			updateRect.append(pygame.Rect(filled[i].x, filled[i].y, filled[i].width, filled[i].height))
-			count += 1
-			if count == speed:
-				pygame.display.update(updateRect)
-				count = 0
-	return
-
-def sparkleAlgorithm(grid, rows):
-	win.fill(white)
-	pygame.display.update()
-	indices = []
-	for i in range(len(grid)):
-		for j in range(len(grid[i])):
-			indices.append((i,j))
-			grid[i][j].setColor()
-	random.shuffle(indices)
-	count = 0
-	updateRects = []
-	speed = 250
-	num = 0
-	for i in indices:
-		r = i[0]
-		c = i[1]
-		grid[r][c].restoreColor()
-		currentSquare = grid[r][c]
-		currentSquare.draw(win)
-		updateRects.append(pygame.Rect(currentSquare.x, currentSquare.y, currentSquare.width, currentSquare.height))
-		count += 1
-		num += 1
-		if count == speed:
-			pygame.display.update(updateRects)
-			updateRects = []
-			count = 0
-		if num == len(indices) // 10 * 9:
-			break
-	pygame.display.update()
-	sparkle(grid, indices)
-	return
-					
-    	
 
 def squareWhiteOutAlgorithm(grid, rows, width):
 	mp = {}
 	while True:
-		speed = 400
-		win.fill(white)
+		win.fill(black)
 		pygame.display.update()
 		changeColorByRandom(grid, rows)
-		pygame.time.wait(3000)
+		pygame.time.wait(7000)
 		changeColorByRandom(grid, rows, False)
 		pygame.time.wait(3000)
 		win.fill(black)
@@ -279,11 +269,13 @@ def main(win, width):
 	print(len(content))
 	while len(content) < 144500:
 		content += " "
-	rows = 485
-	print(rows)
-	grid = makeGrid(rows, width, content)
-	draw(win,grid,rows, width)
+	rows = w // 2
+	cols = h // 2
 
+	print(rows)
+	grid = makeGrid(rows, cols, width, content)
+	draw(win,grid,rows, width)
+	# win.fill(black)
 	pygame.display.update()
 	while run:
 
@@ -291,9 +283,9 @@ def main(win, width):
 			if event.type==pygame.QUIT:
 				run = False
 			if event.type == pygame.KEYDOWN:
-				if event.key == pygame.K_RETURN:
-					print("clicked")
-					sparkleAlgorithm(grid, rows)
+				# if event.key == pygame.K_RETURN:
+				# 	print("clicked")
+				# 	sparkleAlgorithm(grid, rows)
 
 				if event.key == pygame.K_c:
 					squareWhiteOutAlgorithm(grid, rows, width)
