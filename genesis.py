@@ -210,8 +210,7 @@ def changeColorByRandom(grid, rows, restore = True):
 	random.shuffle(indices)
 	count = 0
 	updateRects = []
-	speed = 50
-	currentSpeed = speed
+	speed = 200
 	for index, i in enumerate(indices):
 		r = i[0]
 		c = i[1]
@@ -223,7 +222,7 @@ def changeColorByRandom(grid, rows, restore = True):
 		currentSquare.draw(win)
 		updateRects.append(pygame.Rect(currentSquare.x, currentSquare.y, currentSquare.width, currentSquare.height))
 		count += 1
-		if count == currentSpeed or index > len(indices) - 30:
+		if count == speed or index > len(indices) - 30:
 			pygame.display.update(updateRects)
 			updateRects = []
 			count = 0
@@ -275,7 +274,7 @@ def main(win, width):
 	print(rows)
 	grid = makeGrid(rows, cols, width, content)
 	draw(win,grid,rows, width)
-	# win.fill(black)
+	win.fill(black)
 	pygame.display.update()
 	while run:
 
